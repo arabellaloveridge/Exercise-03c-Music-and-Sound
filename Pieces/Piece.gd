@@ -15,7 +15,11 @@ export var transparent_time = 1.0
 export var scale_time = 1.5
 export var rot_time = 1.5
 
+onready var Sound1 = get_node("/root/Game/Sound 1")
+onready var Sound2 = get_node("/root/Game/Sound 2")
+onready var Sound3 = get_node("/root/Game/Sound 3")
 
+var Coin = preload("res://Coin/Coin.tscn")
 
 func _ready():
 	$Select.texture = $Sprite.texture
@@ -29,6 +33,7 @@ func _physics_process(_delta):
 	if selected:
 		$Select.show()
 		$Selected.emitting = true
+		Sound1.play_sound()
 	else:
 		$Select.hide()
 		$Selected.emitting = false
@@ -42,3 +47,12 @@ func move_piece(change):
 
 func die():
 	dying = true;
+	Sound3.play_sound()
+	if Effects == null:
+		Effects = get_node_or_null("/root/Game/Effects")
+	if Effects != null:
+		var coin = Coin.instance()
+		coin.position = target_position
+		Effects.add_child(coin)
+		Sound2.play_sound()
+	
